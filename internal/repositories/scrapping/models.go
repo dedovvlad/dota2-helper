@@ -5,6 +5,7 @@
 package postgres
 
 import (
+	"database/sql"
 	"time"
 
 	"github.com/google/uuid"
@@ -13,6 +14,7 @@ import (
 type Hero struct {
 	ID        uuid.UUID
 	HeroName  string
+	IsActive  bool
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -20,6 +22,8 @@ type Hero struct {
 type Item struct {
 	ID        uuid.UUID
 	ItemName  string
+	Link      sql.NullString
+	IsActive  bool
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

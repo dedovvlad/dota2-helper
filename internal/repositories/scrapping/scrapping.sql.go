@@ -7,6 +7,7 @@ package postgres
 
 import (
 	"context"
+	"database/sql"
 )
 
 const newHeroes = `-- name: NewHeroes :exec
@@ -20,11 +21,109 @@ func (q *Queries) NewHeroes(ctx context.Context, heroName string) error {
 }
 
 const newItems = `-- name: NewItems :exec
-INSERT INTO items (item_name)
-VALUES ($1)
+INSERT INTO items (item_name, link)
+VALUES ($1, $2)
 `
 
-func (q *Queries) NewItems(ctx context.Context, itemName string) error {
-	_, err := q.db.ExecContext(ctx, newItems, itemName)
+type NewItemsParams struct {
+	ItemName string
+	Link     sql.NullString
+}
+
+func (q *Queries) NewItems(ctx context.Context, arg NewItemsParams) error {
+	_, err := q.db.ExecContext(ctx, newItems, arg.ItemName, arg.Link)
 	return err
+}
+
+const countHeroes = `-- name: countHeroes :one
+SELECT COUNT(*)
+FROM heroes
+`
+
+func (q *Queries) countHeroes(ctx context.Context) (int64, error) {
+	row := q.db.QueryRowContext(ctx, countHeroes)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
+const countItems = `-- name: countItems :one
+SELECT COUNT(*)
+FROM items
+`
+
+func (q *Queries) countItems(ctx context.Context) (int64, error) {
+	row := q.db.QueryRowContext(ctx, countItems)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
+const heroes = `-- name: heroes :many
+SELECT id, hero_name, is_active, created_at, updated_at
+FROM heroes
+`
+
+func (q *Queries) heroes(ctx context.Context) ([]*Hero, error) {
+	rows, err := q.db.QueryContext(ctx, heroes)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []*Hero
+	for rows.Next() {
+		var i Hero
+		if err := rows.Scan(
+			&i.ID,
+			&i.HeroName,
+			&i.IsActive,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, &i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const items = `-- name: items :many
+SELECT id, item_name, link, is_active, created_at, updated_at
+FROM items
+`
+
+func (q *Queries) items(ctx context.Context) ([]*Item, error) {
+	rows, err := q.db.QueryContext(ctx, items)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []*Item
+	for rows.Next() {
+		var i Item
+		if err := rows.Scan(
+			&i.ID,
+			&i.ItemName,
+			&i.Link,
+			&i.IsActive,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, &i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }

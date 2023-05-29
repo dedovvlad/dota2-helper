@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"time"
 
@@ -32,6 +33,9 @@ func app() error {
 	if err != nil {
 		return err
 	}
+
+	ctx := context.Background()
+	defer ctx.Done()
 
 	// init dbs
 	var db *sqlx.DB
@@ -68,7 +72,7 @@ func app() error {
 			Tag(AddHeroesTag).
 			SingletonMode().
 			Do(func() error {
-				err := scrappingProcessorCrone.AddHeroes()
+				err := scrappingProcessorCrone.AddHeroesList(ctx)
 				if err != nil {
 					log.Println(Error, errors.Wrapf(err, "doing schedule [%s]", AddHeroesTag))
 				}
@@ -88,7 +92,7 @@ func app() error {
 			Tag(addItemsTag).
 			SingletonMode().
 			Do(func() error {
-				err := scrappingProcessorCrone.AddItems()
+				err := scrappingProcessorCrone.AddItemsList(ctx)
 				if err != nil {
 					log.Println(Error, errors.Wrapf(err, "doing schedule [%s]", addItemsTag))
 				}

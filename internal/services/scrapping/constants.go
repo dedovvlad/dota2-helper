@@ -1,6 +1,10 @@
 package scrapping
 
-const BaseProtocol string = "https://"
+// Common
+const (
+	BaseProtocol string = "https://"
+	Href         string = "href"
+)
 
 // Heroes
 const (

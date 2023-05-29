@@ -6,4 +6,5 @@ type Hero struct {
 
 type Item struct {
 	Name string
+	Link string
 }
