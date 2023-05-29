@@ -1,0 +1,16 @@
+version: "2"
+sql:
+  - schema: "migrations"
+    queries: "queries/scrapping.sql"
+    engine: "postgresql"
+    gen:
+      go:
+        package: "postgres"
+        out: "../internal/repositories/scrapping"
+        emit_result_struct_pointers: true
+        emit_all_enum_values: true
+        overrides:
+          - go_type: "string"
+            db_type: "jsonb"
+          - go_type: "string"
+            db_type: "json"

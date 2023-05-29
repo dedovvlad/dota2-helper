@@ -19,3 +19,7 @@
 
 # Go workspace file
 go.work
+
+# Custom files and Pacages
+/bin
+vendor
