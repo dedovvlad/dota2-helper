@@ -3,10 +3,11 @@ package scrapping
 import (
 	"strings"
 
-	"github.com/dedovvlad/dota2-helper/internal/common"
-	"github.com/dedovvlad/dota2-helper/internal/models/scrapping"
 	"github.com/gocolly/colly"
 	"github.com/pkg/errors"
+
+	"github.com/dedovvlad/dota2-helper/internal/common"
+	"github.com/dedovvlad/dota2-helper/internal/models/scrapping"
 )
 
 type Service struct {

@@ -1,10 +1,11 @@
 package crone
 
 import (
+	"github.com/pkg/errors"
+
 	"github.com/dedovvlad/dota2-helper/internal/common"
 	scrappingService "github.com/dedovvlad/dota2-helper/internal/models/scrapping"
 	scrappingStorage "github.com/dedovvlad/dota2-helper/internal/repositories/scrapping"
-	"github.com/pkg/errors"
 )
 
 func (p *Processor) AddHeroes() error {

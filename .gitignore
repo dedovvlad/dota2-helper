@@ -23,3 +23,5 @@ go.work
 # Custom files and Pacages
 /bin
 vendor
+.DS_Store
+.idea

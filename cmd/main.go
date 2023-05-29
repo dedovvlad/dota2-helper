@@ -1,16 +1,18 @@
 package main
 
 import (
-	"github.com/dedovvlad/dota2-helper/internal/config"
-	scrappingProcCron "github.com/dedovvlad/dota2-helper/internal/processors/scrapping/crone"
-	scrappingStg "github.com/dedovvlad/dota2-helper/internal/repositories/scrapping"
-	scrappingSrv "github.com/dedovvlad/dota2-helper/internal/services/scrapping"
+	"log"
+	"time"
+
 	"github.com/go-co-op/gocron"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/pkg/errors"
-	"log"
-	"time"
+
+	"github.com/dedovvlad/dota2-helper/internal/config"
+	scrappingProcCron "github.com/dedovvlad/dota2-helper/internal/processors/scrapping/crone"
+	scrappingStg "github.com/dedovvlad/dota2-helper/internal/repositories/scrapping"
+	scrappingSrv "github.com/dedovvlad/dota2-helper/internal/services/scrapping"
 )
 
 const (

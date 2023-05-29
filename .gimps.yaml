@@ -1,3 +1,5 @@
 importOrder: [std, external, internal]
 sets:
   - name: internal
+    patterns:
+      - 'github.com/dedovvlad/dota2-helper/**'
